@@ -1,3 +1,5 @@
+package com.example.safe_box
+
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -6,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.plugin.common.MethodChannel
 import java.io.ByteArrayOutputStream
@@ -50,7 +51,6 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    // This function returns the Base64 encoded app icon
     private fun getAppIconBase64(packageManager: PackageManager, packageName: String): String {
         return try {
             val drawable = packageManager.getApplicationIcon(packageName)
@@ -74,11 +74,10 @@ class MainActivity : FlutterActivity() {
             Base64.encodeToString(byteArray, Base64.NO_WRAP)
         } catch (e: Exception) {
             Log.e("AppInfo", "Error getting app icon: ${e.message}")
-            ""  // return empty string if there's an error
+            ""
         }
     }
 
-    // This is where you gather the list of installed apps, including their icon in Base64 format
     private fun getInstalledAppsWithPermissions(): List<Map<String, Any>> {
         val packageManager = applicationContext.packageManager
         val appsList = mutableListOf<Map<String, Any>>()
@@ -89,7 +88,6 @@ class MainActivity : FlutterActivity() {
             val packageName = packageInfo.packageName
             val iconBase64 = getAppIconBase64(packageManager, packageName)
 
-            // Add more app data as needed
             val appData = mapOf(
                 "appName" to appName,
                 "packageName" to packageName,

@@ -188,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildGauge(String title, Color color, double value) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.secondary.withOpacity(0.1),
+        color: AppColors.secondary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
       ),
       padding: const EdgeInsets.all(12),
@@ -287,9 +287,9 @@ class _HomeScreenState extends State<HomeScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               "Status:",
-              style: TextStyle(fontSize: 16, color: Colors.white),
+              style: const TextStyle(fontSize: 16, color: Colors.white),
             ),
             Text(
               label,

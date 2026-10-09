@@ -2,10 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'AppPermissionsDetailPage.dart';
-import 'AppPermissionsDetailPage.dart'; // The new page to show app permissions
 
 class AppPermissionsPage extends StatefulWidget {
-  const AppPermissionsPage({super.key});
+  final List<Map<String, dynamic>>? filteredApps;
+
+  const AppPermissionsPage({
+    super.key,
+    this.filteredApps,
+  });
 
   @override
   _AppPermissionsPageState createState() => _AppPermissionsPageState();
@@ -18,7 +22,12 @@ class _AppPermissionsPageState extends State<AppPermissionsPage> {
   @override
   void initState() {
     super.initState();
-    _fetchInstalledApps();
+
+    if (widget.filteredApps != null) {
+      _apps = widget.filteredApps!;
+    } else {
+      _fetchInstalledApps();
+    }
   }
 
   Future<void> _fetchInstalledApps() async {
@@ -58,15 +67,13 @@ class _AppPermissionsPageState extends State<AppPermissionsPage> {
             final app = _apps[index];
             return GestureDetector(
               onTap: () {
-                // Navigate to the permissions page for the selected app
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        AppPermissionsDetailPage(
-                          appName: app['appName'],
-                          packageName: app['packageName'],
-                        ),
+                    builder: (context) => AppPermissionsDetailPage(
+                      appName: app['appName'],
+                      packageName: app['packageName'],
+                    ),
                   ),
                 );
               },
@@ -75,7 +82,10 @@ class _AppPermissionsPageState extends State<AppPermissionsPage> {
                 decoration: BoxDecoration(
                   color: const Color(0xFF3E1F92),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.white54, width: 1),
+                  border: Border.all(
+                    color: Colors.white54,
+                    width: 1,
+                  ),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
@@ -86,7 +96,8 @@ class _AppPermissionsPageState extends State<AppPermissionsPage> {
                 ),
                 child: ListTile(
                   leading: ClipOval(
-                    child: app['icon'] != null && app['icon'].isNotEmpty
+                    child: app['icon'] != null &&
+                        app['icon'].isNotEmpty
                         ? Image.memory(
                       base64Decode(app['icon']),
                       width: 40,
@@ -94,12 +105,17 @@ class _AppPermissionsPageState extends State<AppPermissionsPage> {
                       fit: BoxFit.cover,
                     )
                         : const Icon(
-                        Icons.android, size: 40, color: Colors.white),
+                      Icons.android,
+                      size: 40,
+                      color: Colors.white,
+                    ),
                   ),
                   title: Text(
                     app['appName'],
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                   subtitle: Text(
                     app['packageName'],
